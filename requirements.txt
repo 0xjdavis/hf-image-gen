@@ -9,7 +9,7 @@ transformers
 
 torch
 
-tensorflow==2.12.0
+#tensorflow==2.12.0
 #==2.16.2
 
 #tf-keras
