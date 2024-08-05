@@ -60,7 +60,7 @@ def main():
             st.write(scenario)
         with st.expander("Story"):
             st.write(story)
-        audio_bytes = audio_file.read(story)
+        audio_bytes = audio_file.read()
         st.audio(audio_bytes, format="audio/ogg")
         sample_rate = 44100  # 44100 samples per second
         seconds = 2  # Note duration of 2 seconds
