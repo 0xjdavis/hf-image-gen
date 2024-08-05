@@ -4,7 +4,8 @@ transformers==4.42.1
 # google-api-core==2.19.1
 # google-cloud-firestore==2.16.1
 # googleapis-common-protos==1.63.2
-# tensorflow==2.16.2
+tensorflow 
+#==2.16.2
 
 # tf-keras
 # tensorrt 
