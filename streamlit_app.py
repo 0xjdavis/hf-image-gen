@@ -38,18 +38,18 @@ def generateStory(scenario):
 
 def text2speech(message):
     headers = {"Authorization": f"Bearer {HUGGINGFACE_KEY}"}
-    # print(inputText)
-	#handling error of image-to-text model
-	if inputText == "error":
-		return "An error has occured on Hugging Face."
-	
+    print(inputText)
+
+    if inputText == "error":
+        return "An error has occured on Hugging Face."
+
     # GPT 2
     # gpt2_xl = "https://api-inference.huggingface.co/models/gpt2-xl"
     # gpt2 = "https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits"
 
-	# FALCON 7B
-	falcon_7b = "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct"
-	falcon_text_for_story = f"create a positive, real, practical and short story from this context {inputText}."
+    # FALCON 7B
+    falcon_7b = "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct"
+    falcon_text_for_story = f"create a positive, real, practical and short story from this context {inputText}."
 
     API_URL = "falcon_7b"
     falcon_text_for_story = f"create a positive, real, practical and short story from this context {inputText}."
