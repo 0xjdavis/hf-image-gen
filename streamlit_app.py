@@ -29,7 +29,7 @@ def generateStory(scenario):
     """
 
     prompt = template.format(scenario=scenario)
-    story_generator = pipeline("text-generation", model="gpt2")
+    story_generator = pipeline("text-generation", model="falcon_7b") #gpt2
 
     story = story_generator(prompt, max_new_tokens=40, num_return_sequences=1)[0]['generated_text']
 
@@ -37,8 +37,23 @@ def generateStory(scenario):
     return story
 
 def text2speech(message):
-    API_URL = "https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits"
     headers = {"Authorization": f"Bearer {HUGGINGFACE_KEY}"}
+    # print(inputText)
+	#handling error of image-to-text model
+	if inputText == "error":
+		return "An error has occured on Hugging Face."
+	
+    # GPT 2
+    # gpt2_xl = "https://api-inference.huggingface.co/models/gpt2-xl"
+    # gpt2 = "https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits"
+
+	# FALCON 7B
+	falcon_7b = "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct"
+	falcon_text_for_story = f"create a positive, real, practical and short story from this context {inputText}."
+
+    API_URL = "falcon_7b"
+    falcon_text_for_story = f"create a positive, real, practical and short story from this context {inputText}."
+
     payloads ={
          "inputs": message
     }
@@ -65,7 +80,7 @@ def main():
 
         st.image(
             uploaded_file, 
-            caption="Uploaded file", 
+            caption="Uploaded Image", 
             use_column_width= True
             )
         
