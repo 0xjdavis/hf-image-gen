@@ -1,10 +1,8 @@
 import os
 import requests
-from dotenv import find_dotenv, load_dotenv
 from transformers import pipeline
 import streamlit as st
 import tensorflow
-
 
 HUGGINGFACE_KEY = st.secrets("huggingface_key")
 
