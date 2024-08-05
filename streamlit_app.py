@@ -4,7 +4,7 @@ from transformers import pipeline
 import streamlit as st
 import tensorflow
 
-HUGGINGFACE_KEY = st.secrets("huggingface_key")
+HUGGINGFACE_KEY = st.secrets['huggingface_key']
 
 def img2text(url):
     image_to_text = pipeline("image-to-text", model="Salesforce/blip-image-captioning-large")
