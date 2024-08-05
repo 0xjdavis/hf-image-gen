@@ -7,3 +7,4 @@ googleapis-common-protos==1.63.2
 tensorflow==2.16.2
 
 tf-keras
+tensorrt 
