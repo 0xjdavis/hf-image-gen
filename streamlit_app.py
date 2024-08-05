@@ -1,18 +1,18 @@
 import streamlit as st
-import os
+from PIL import Image
 import requests
 from transformers import pipeline, BlipProcessor, BlipForConditionalGeneration
-import torch
 
 HUGGINGFACE_KEY = st.secrets['huggingface_key']
 
-def img2text(url):
+def img2text(image_path):
     processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
     model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
 
-    image = processor(images=url, return_tensors="pt").pixel_values
-    text = model.generate(image)
-    generated_text = processor.decode(text[0], skip_special_tokens=True)
+    image = Image.open(image_path)
+    inputs = processor(images=image, return_tensors="pt")
+    output = model.generate(**inputs)
+    generated_text = processor.decode(output[0], skip_special_tokens=True)
     print("Result:", generated_text)
     return generated_text
 
@@ -35,8 +35,8 @@ def generateStory(scenario):
 def text2speech(message):
     headers = {"Authorization": f"Bearer {HUGGINGFACE_KEY}"}
     API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-large-960h-lv60-self"
-    payloads = {"inputs": message}
-    response = requests.post(API_URL, headers=headers, json=payloads)
+    payload = {"inputs": message}
+    response = requests.post(API_URL, headers=headers, json=payload)
     with open("audio.flac", "wb") as file:
         file.write(response.content)
 
@@ -47,11 +47,12 @@ def main():
 
     if uploaded_file is not None:
         bytes_data = uploaded_file.getvalue()
-        with open(uploaded_file.name, "wb") as file:
+        image_path = f"{uploaded_file.name}"
+        with open(image_path, "wb") as file:
             file.write(bytes_data)
 
         st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
-        scenario = img2text(uploaded_file.name)
+        scenario = img2text(image_path)
         story = generateStory(scenario)
         text2speech(story)
 
