@@ -1,15 +1,20 @@
 import streamlit as st
 import os
 import requests
-from transformers import pipeline
+from transformers import pipeline, BlipProcessor, BlipForConditionalGeneration
+import torch
 
 HUGGINGFACE_KEY = st.secrets['huggingface_key']
 
 def img2text(url):
-    image_to_text = pipeline("image-to-text", model="Salesforce/blip-image-captioning-large")
-    text = image_to_text(url)[0]["generated_text"]
-    print("Result:", text)
-    return text
+    processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
+    model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
+
+    image = processor(images=url, return_tensors="pt").pixel_values
+    text = model.generate(image)
+    generated_text = processor.decode(text[0], skip_special_tokens=True)
+    print("Result:", generated_text)
+    return generated_text
 
 def generateStory(scenario):
     template = """
@@ -22,7 +27,7 @@ def generateStory(scenario):
         Story:
     """
     prompt = template.format(scenario=scenario)
-    story_generator = pipeline("text-generation", model="gpt2")
+    story_generator = pipeline("text-generation", model="gpt2", framework="pt")
     story = story_generator(prompt, max_new_tokens=40, num_return_sequences=1)[0]['generated_text']
     print("Story:", story)
     return story
