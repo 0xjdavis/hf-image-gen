@@ -7,6 +7,6 @@ transformers==4.42.1
 tensorflow 
 #==2.16.2
 
-# tf-keras
+tf-keras
 # tensorrt 
 # tensorrt_bindings
