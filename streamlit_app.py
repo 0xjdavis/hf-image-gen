@@ -1,8 +1,10 @@
+import streamlit as st
+
 import os
 import requests
 from transformers import pipeline
-import streamlit as st
 import tensorflow
+import tensorrt
 
 HUGGINGFACE_KEY = st.secrets['huggingface_key']
 
@@ -44,7 +46,7 @@ def text2speech(message):
     with open("audio.flac", "wb") as file:
         file.write(response.content)
 
-#scenario = img2text("image.jpg")
+#scenario = img2text("image.png")
 #story = generateStory(scenario)
 #text2speech(story)
 
@@ -52,8 +54,8 @@ def main():
     st.set_page_config(
         page_title="image", page_icon="🤖"
     )
-    st.header("Turn your image to an audio story!")
-    uploaded_file=st.file_uploader("Upload an image...", type="jpg")
+    st.header("Upload an image to create an audio story!")
+    uploaded_file=st.file_uploader("Upload an image", type="png")
 
     if uploaded_file is not None:
         print(uploaded_file)
