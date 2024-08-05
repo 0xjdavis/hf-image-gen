@@ -1,11 +1,13 @@
 streamlit
-requests==2.32.3
-transformers==4.42.1
+requests
+#==2.32.3
+transformers
+#==4.42.1
 # google-api-core==2.19.1
 # google-cloud-firestore==2.16.1
 # googleapis-common-protos==1.63.2
 
-pytorch
+#pytorch
 
 #tensorflow 
 #==2.16.2
