@@ -3,8 +3,8 @@ import streamlit as st
 import os
 import requests
 from transformers import pipeline
-import tensorflow
-import tensorrt
+# import tensorflow
+# import tensorrt
 
 HUGGINGFACE_KEY = st.secrets['huggingface_key']
 
