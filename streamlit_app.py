@@ -44,7 +44,7 @@ def text2speech(message):
     # API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-large-960h-lv60-self"
     #payload = {"inputs": message}
     #response = requests.post(API_URL, headers=headers, json=payload)
-    #with open("story.mpeg", "wb") as file:
+    #with open("story.mp3", "wb") as file:
     #    file.write(response.content)
 
 def main():
@@ -61,14 +61,14 @@ def main():
         st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
         scenario = img2text(image_path)
         story = generateStory(scenario)
-        text2speech(story)
+        messge = text2speech(message)
 
          
         with st.expander("Scenario"):
             st.write(scenario)
         with st.expander("Story"):
             st.write(story)
-        audio_bytes = text2speech()
+        audio_bytes = message
         st.audio(audio_bytes, format='audio/mp3')
 
 if __name__ == "__main__":
