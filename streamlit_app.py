@@ -26,7 +26,6 @@ def generateStory(scenario):
 
     
 def text2speech(message):
-    st.write(story)
     processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
     model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
     vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
@@ -56,13 +55,12 @@ def main():
         st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
         scenario = img2text(image_path)
         story = generateStory(scenario)
-        audio_text = text2speech(story)
 
         with st.expander("Scenario"):
             st.write(scenario)
         with st.expander("Story"):
             st.write(story)
-        audio_bytes = audio_text
+        audio_bytes = story
         st.audio(audio_bytes, format='audio/mp3')
 
 if __name__ == "__main__":
