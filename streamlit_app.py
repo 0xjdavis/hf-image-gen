@@ -33,6 +33,9 @@ def generateStory(scenario):
     print("Story:", story)
     return story
 
+    with story:
+        st.alert(story)
+    
 def text2speech(message):
     processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
     model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
