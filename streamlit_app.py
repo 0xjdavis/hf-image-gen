@@ -78,8 +78,7 @@ def main():
             st.write(scenario)
         with st.expander("Story"):
             st.write(story)
-        audio_bytes = story.read()
-        st.audio(audio_bytes, format="audio/mpeg")
+        st.audio(story, format="audio/mpeg")
 
 if __name__ == "__main__":
     main()
