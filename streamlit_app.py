@@ -34,10 +34,18 @@ def generateStory(scenario):
 
 def text2speech(message):
     headers = {"Authorization": f"Bearer {HUGGINGFACE_KEY}"}
+
+    # Load model directly
+from transformers import AutoProcessor, AutoModelForSpeechSeq2Seq
+
+processor = AutoProcessor.from_pretrained("openai/whisper-large-v3")
+model = AutoModelForSpeechSeq2Seq.from_pretrained("openai/whisper-large-v3")
+
+
     API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-large-960h-lv60-self"
     payload = {"inputs": message}
     response = requests.post(API_URL, headers=headers, json=payload)
-    with open("audio.flac", "wb") as file:
+    with open("audio.mpeg", "wb") as file:
         file.write(response.content)
 
 def main():
@@ -61,16 +69,7 @@ def main():
         with st.expander("Story"):
             st.write(story)
         audio_bytes = audio_file.read()
-        st.audio(audio_bytes, format="audio/ogg")
-        sample_rate = 44100  # 44100 samples per second
-        seconds = 2  # Note duration of 2 seconds
-        frequency_la = 440  # Our played note will be 440 Hz
-        # Generate array with seconds*sample_rate steps, ranging between 0 and seconds
-        t = np.linspace(0, seconds, seconds * sample_rate, False)
-        # Generate a 440 Hz sine wave
-        note_la = np.sin(frequency_la * t * 2 * np.pi)
-        
-        st.audio(note_la, sample_rate=sample_rate)
+        st.audio(audio_bytes, format="audio/mpeg")
 
 if __name__ == "__main__":
     main()
