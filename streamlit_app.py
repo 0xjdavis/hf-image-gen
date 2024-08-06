@@ -23,7 +23,7 @@ def generateStory(scenario):
         {scenario}
     """
     prompt = template.format(scenario=scenario)
-    story_generator = pipeline("text-generation", model="gpt2", framework="pt")
+    story_generator = pipeline("text-generation", model="gpt2-large", framework="pt")
     story = story_generator(prompt, max_new_tokens=40, num_return_sequences=1)[0]['generated_text']
     return story
 
