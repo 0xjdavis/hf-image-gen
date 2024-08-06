@@ -15,15 +15,13 @@ def img2text(image_path):
     inputs = processor(images=image, return_tensors="pt")
     output = model.generate(**inputs)
     generated_text = processor.decode(output[0], skip_special_tokens=True)
-    # print("Result", generated_text)
     return generated_text
 
 def generateStory(scenario):
     template = "Create a short, engaging story based on the provided scenario. The story should be imaginative and not exceede 30 words."
     prompt = template.format(scenario=scenario)
     story_generator = pipeline("text-generation", model="gpt2", framework="pt")
-    story = story_generator(prompt, max_new_tokens=400, num_return_sequences=1)[0]['generated_text']
-    # print("Story", story)
+    story = story_generator(prompt, max_new_tokens=40, num_return_sequences=1)[0]['generated_text']
     return story
 
     
@@ -37,7 +35,7 @@ def text2speech(message):
     
     set_seed(555)  # make deterministic
     
-    # generate speech
+    # GENERATE SPEECH
     speech = model.generate(inputs["input_ids"], speaker_embeddings=speaker_embeddings, vocoder=vocoder)
     speech.shape
     torch.Size([15872])
@@ -70,7 +68,7 @@ def main():
             st.write(scenario)
         with st.expander("Story"):
             st.write(story)
-        audio_bytes = StringIO(story.decode("utf-8"))
+        audio_bytes = text2speech(story)
         st.audio(audio_bytes, format='audio/mp3')
 
 if __name__ == "__main__":
