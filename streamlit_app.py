@@ -1,7 +1,7 @@
 import streamlit as st
 from PIL import Image
 import requests
-from transformers import pipeline, BlipProcessor, BlipForConditionalGeneration
+from transformers import pipeline, BlipProcessor, BlipForConditionalGeneration, SpeechT5Processor, SpeechT5ForTextToSpeech, SpeechT5HifiGan, set_seed
 
 HUGGINGFACE_KEY = st.secrets['huggingface_key']
 
@@ -33,15 +33,26 @@ def generateStory(scenario):
     return story
 
 def text2speech(message):
-    headers = {"Authorization": f"Bearer {HUGGINGFACE_KEY}"}
-
-    # Load model directly
-from transformers import AutoProcessor, AutoModelForSpeechSeq2Seq
-    API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-large-960h-lv60-self"
-    payload = {"inputs": message}
-    response = requests.post(API_URL, headers=headers, json=payload)
-    with open("story.mpeg", "wb") as file:
-        file.write(response.content)
+    processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
+    model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
+    vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
+    
+    inputs = processor(text="Hello, my dog is cute", return_tensors="pt")
+    speaker_embeddings = torch.zeros((1, 512))  # or load xvectors from a file
+    
+    set_seed(555)  # make deterministic
+    
+    # generate speech
+    speech = model.generate(inputs["input_ids"], speaker_embeddings=speaker_embeddings, vocoder=vocoder)
+    speech.shape
+    torch.Size([15872])
+    
+    #headers = {"Authorization": f"Bearer {HUGGINGFACE_KEY}"}
+    # API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-large-960h-lv60-self"
+    #payload = {"inputs": message}
+    #response = requests.post(API_URL, headers=headers, json=payload)
+    #with open("story.mpeg", "wb") as file:
+    #    file.write(response.content)
 
 def main():
     st.set_page_config(page_title="Image to Story", page_icon="🤖")
