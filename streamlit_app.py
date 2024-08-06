@@ -72,7 +72,7 @@ def main():
             st.write(scenario)
         with st.expander("Template"):
             st.write(prompt)
-        with st.expander("Story")
+        with st.expander("Story"):
             st.write(story)
         audio_bytes = StringIO(story.decode("utf-8"))
         st.audio(audio_bytes, format='audio/mp3')
