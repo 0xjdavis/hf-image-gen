@@ -78,7 +78,9 @@ def main():
         audio_base64 = base64.b64encode(story).decode('utf-8')
         audio_tag = f'<audio autoplay="true" src="data:audio/wav;base64,{audio_base64}">'
         st.markdown(audio_tag, unsafe_allow_html=True)
-        st.audio(story, format="audio/mpeg")
+
+        audio_bytes = story.getvalue()
+        st.audio(audio_bytes, format='audio/mp3')
 
 if __name__ == "__main__":
     main()
