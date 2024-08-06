@@ -3,6 +3,7 @@ from PIL import Image
 import requests
 from transformers import pipeline, BlipProcessor, BlipForConditionalGeneration, SpeechT5Processor, SpeechT5ForTextToSpeech, SpeechT5HifiGan, set_seed
 import torch
+import soundfile as sf  # Add this import for saving audio
 
 HUGGINGFACE_KEY = st.secrets['huggingface_key']
 
@@ -40,10 +41,10 @@ def text2speech(message):
     # Generate speech
     speech = model.generate_speech(inputs["input_ids"], speaker_embeddings=speaker_embeddings, vocoder=vocoder)
 
-    # Save the generated speech to an audio file
+    # Convert tensor to numpy array and save as a WAV file
+    audio_data = speech.detach().cpu().numpy()
     audio_path = "audio.wav"
-    with open(audio_path, "wb") as f:
-        f.write(speech.numpy().tobytes())
+    sf.write(audio_path, audio_data, samplerate=16000)
 
     return audio_path
 
