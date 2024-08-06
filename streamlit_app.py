@@ -1,7 +1,8 @@
 import streamlit as st
 from PIL import Image
 import requests
-from transformers import pipeline, BlipProcessor, BlipForConditionalGeneration, SentencePiece, SpeechT5Processor, SpeechT5ForTextToSpeech, SpeechT5HifiGan, set_seed
+import SentencePiece
+from transformers import pipeline, BlipProcessor, BlipForConditionalGeneration, SpeechT5Processor, SpeechT5ForTextToSpeech, SpeechT5HifiGan, set_seed
 
 HUGGINGFACE_KEY = st.secrets['huggingface_key']
 
