@@ -1,9 +1,8 @@
 import streamlit as st
 from PIL import Image
 import requests
-from io import StringIO
 from transformers import pipeline, BlipProcessor, BlipForConditionalGeneration, SpeechT5Processor, SpeechT5ForTextToSpeech, SpeechT5HifiGan, set_seed
-import torch as torch
+import torch
 
 HUGGINGFACE_KEY = st.secrets['huggingface_key']
 
@@ -18,28 +17,30 @@ def img2text(image_path):
     return generated_text
 
 def generateStory(scenario):
-    template = "Create a short, engaging story based on the provided scenario. The story should be imaginative and not exceede 30 words."
+    template = "Create a short, engaging story based on the provided scenario. The story should be imaginative and not exceed 30 words."
     prompt = template.format(scenarios=scenario)
     story_generator = pipeline("text-generation", model="gpt2", framework="pt")
     story = story_generator(prompt, max_new_tokens=40, num_return_sequences=1)[0]['generated_text']
     return story
 
-    
 def text2speech(message):
     processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
     model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
     vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
 
-    inputs = processor(text=story, return_tensors="pt")
+    inputs = processor(text=message, return_tensors="pt")
     speaker_embeddings = torch.zeros((1, 512))  # or load xvectors from a file
-    
+
     set_seed(555)  # make deterministic
-    
+
     # GENERATE SPEECH
-    speech = model.generate(inputs["input_ids"], speaker_embeddings=speaker_embeddings, vocoder=vocoder)
-    speech.shape
-    torch.Size([15872])
-    
+    speech = model.generate_speech(inputs["input_ids"], speaker_embeddings=speaker_embeddings, vocoder=vocoder)
+
+    # Save the generated speech to an audio file
+    with open("audio.wav", "wb") as f:
+        f.write(speech.numpy().tobytes())
+
+    return "audio.wav"
 
 def main():
     st.set_page_config(page_title="Image to Story", page_icon="🤖")
@@ -55,13 +56,14 @@ def main():
         st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
         scenario = img2text(image_path)
         story = generateStory(scenario)
+        audio_file = text2speech(story)
 
         with st.expander("Scenario"):
             st.write(scenario)
         with st.expander("Story"):
             st.write(story)
-        audio_bytes = story
-        st.audio(audio_bytes, format='audio/mp3')
+
+        st.audio(audio_file, format='audio/wav')
 
 if __name__ == "__main__":
     main()
