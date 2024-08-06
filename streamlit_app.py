@@ -19,13 +19,10 @@ def img2text(image_path):
 
 def generateStory(scenario):
     template = """
+        Context: {scenario}
         You are a skilled storyteller. Your task is to create a short, engaging story based on the provided context. 
         The story should be imaginative and concise, not exceeding 30 words.
-        Context: {scenario}
-        Example:
-        Context: They are having a conversation at a table with a cup of coffee.
-        Story: "And then she whispered a secret that changed everything," he said over coffee, eyes gleaming.
-        Story:
+        Story: generated_text
     """
     prompt = template.format(scenario=scenario)
     story_generator = pipeline("text-generation", model="gpt2", framework="pt")
@@ -33,8 +30,6 @@ def generateStory(scenario):
     print("Story:", story)
     return story
 
-    with story:
-        st.warning(story, icon="⚠️")
     
 def text2speech(message):
     processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
