@@ -17,8 +17,12 @@ def img2text(image_path):
     return generated_text
 
 def generateStory(scenario):
-    template = "Create a short, engaging story based on the provided scenario. The story should be imaginative and not exceed 30 words."
-    prompt = template.format(scenarios=scenario)
+    template = """
+        Create a short, engaging story based on the provided scenario. 
+        The story should be imaginative and not exceed 30 words.
+        Scenario: {scenario}
+    """
+    prompt = template.format(scenario=scenario)
     story_generator = pipeline("text-generation", model="gpt2", framework="pt")
     story = story_generator(prompt, max_new_tokens=40, num_return_sequences=1)[0]['generated_text']
     return story
@@ -29,18 +33,19 @@ def text2speech(message):
     vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
 
     inputs = processor(text=message, return_tensors="pt")
-    speaker_embeddings = torch.zeros((1, 512))  # or load xvectors from a file
+    speaker_embeddings = torch.zeros((1, 512))  # Use default or specific speaker embeddings
 
-    set_seed(555)  # make deterministic
+    set_seed(555)  # Make deterministic
 
-    # GENERATE SPEECH
+    # Generate speech
     speech = model.generate_speech(inputs["input_ids"], speaker_embeddings=speaker_embeddings, vocoder=vocoder)
 
     # Save the generated speech to an audio file
-    with open("audio.wav", "wb") as f:
+    audio_path = "audio.wav"
+    with open(audio_path, "wb") as f:
         f.write(speech.numpy().tobytes())
 
-    return "audio.wav"
+    return audio_path
 
 def main():
     st.set_page_config(page_title="Image to Story", page_icon="🤖")
