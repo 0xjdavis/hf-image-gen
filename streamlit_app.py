@@ -6,8 +6,7 @@ from transformers import pipeline, BlipProcessor, BlipForConditionalGeneration, 
 import torch as torch
 
 HUGGINGFACE_KEY = st.secrets['huggingface_key']
-template = "Create a short, engaging story based on the provided scenario. The story should be imaginative and concise, not exceeding 30 words."
-        
+
 def img2text(image_path):
     processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
     model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
@@ -17,13 +16,13 @@ def img2text(image_path):
     output = model.generate(**inputs)
     generated_text = processor.decode(output[0], skip_special_tokens=True)
     # print("Result", generated_text)
-    return generated_text
+    return scenario
 
 def generateStory(scenario):
-    template = template
+    template = "Create a short, engaging story based on the provided scenario. The story should be imaginative and concise, not exceeding 30 words."
     prompt = template.format(scenario=scenario)
     story_generator = pipeline("text-generation", model="gpt2", framework="pt")
-    story = story_generator(prompt, max_new_tokens=400, num_return_sequences=1)[0]['generated_text']
+    story = story_generator(prompt, max_new_tokens=400, num_return_sequences=1)[0]['scenario']
     # print("Story", story)
     return story
 
