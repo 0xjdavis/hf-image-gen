@@ -16,12 +16,11 @@ def img2text(image_path):
     output = model.generate(**inputs)
     generated_text = processor.decode(output[0], skip_special_tokens=True)
     return generated_text
-
-def generateStory(scenario):
+    
+# Create a short, engaging story based on the provided scenario. The story should be imaginative and not exceed 30 words. Scenario: 
+def generateStory(scenario): 
     template = """
-        Create a short, engaging story based on the provided scenario. 
-        The story should be imaginative and not exceed 30 words.
-        Scenario: {scenario}
+        {scenario}
     """
     prompt = template.format(scenario=scenario)
     story_generator = pipeline("text-generation", model="gpt2", framework="pt")
