@@ -34,7 +34,7 @@ def generateStory(scenario):
     return story
 
     with story:
-        st.alert(story)
+        st.warning(story, icon="⚠️")
     
 def text2speech(message):
     processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
