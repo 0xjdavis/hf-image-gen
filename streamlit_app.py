@@ -56,13 +56,13 @@ def main():
         st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
         scenario = img2text(image_path)
         story = generateStory(scenario)
-        messge = text2speech(message)
+        audio_text = text2speech(message)
 
         with st.expander("Scenario"):
             st.write(scenario)
         with st.expander("Story"):
             st.write(story)
-        audio_bytes = message
+        audio_bytes = audio_text
         st.audio(audio_bytes, format='audio/mp3')
 
 if __name__ == "__main__":
