@@ -46,8 +46,8 @@ def text2speech(message):
     #response = requests.post(API_URL, headers=headers, json=payload)
     #with open("story.mp3", "wb") as file:
     #    file.write(response.content)
-    message = text2speech(story)
-    return message
+    speech = text2Speech(story)
+    return speech
 
 def main():
     st.set_page_config(page_title="Image to Story", page_icon="🤖")
