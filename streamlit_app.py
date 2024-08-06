@@ -19,7 +19,7 @@ def img2text(image_path):
 
 def generateStory(scenario):
     template = "Create a short, engaging story based on the provided scenario. The story should be imaginative and not exceede 30 words."
-    prompt = template.format(scenario=scenario)
+    prompt = template.format(scenarios=scenario)
     story_generator = pipeline("text-generation", model="gpt2", framework="pt")
     story = story_generator(prompt, max_new_tokens=40, num_return_sequences=1)[0]['generated_text']
     return story
@@ -56,7 +56,7 @@ def main():
         st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
         scenario = img2text(image_path)
         story = generateStory(scenario)
-        audio_text = text2speech(message)
+        audio_text = text2speech(story)
 
         with st.expander("Scenario"):
             st.write(scenario)
