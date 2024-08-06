@@ -1,9 +1,6 @@
 streamlit
 requests
-#==2.32.3
 transformers
-#==4.42.1
-
 torch
 SentencePiece
 soundfile
