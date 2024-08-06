@@ -73,7 +73,7 @@ def main():
         with st.expander("Story"):
             st.write(story)
         
-        audio_base64 = base64.b64encode(story).decode('utf-8')
+        audio_base64 = base64.b64encode(story)
         audio_tag = f'<audio autoplay="true" src="data:audio/wav;base64,{audio_base64}">'
         st.markdown(audio_tag, unsafe_allow_html=True)
 
