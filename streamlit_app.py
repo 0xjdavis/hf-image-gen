@@ -45,7 +45,7 @@ model = AutoModelForSpeechSeq2Seq.from_pretrained("openai/whisper-large-v3")
     API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-large-960h-lv60-self"
     payload = {"inputs": message}
     response = requests.post(API_URL, headers=headers, json=payload)
-    with open("audio.mpeg", "wb") as file:
+    with open("story.mpeg", "wb") as file:
         file.write(response.content)
 
 def main():
@@ -68,7 +68,7 @@ def main():
             st.write(scenario)
         with st.expander("Story"):
             st.write(story)
-        audio_bytes = audio_file.read()
+        audio_bytes = story.read()
         st.audio(audio_bytes, format="audio/mpeg")
 
 if __name__ == "__main__":
