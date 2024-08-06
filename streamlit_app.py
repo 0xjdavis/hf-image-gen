@@ -30,7 +30,7 @@ def text2speech(message):
     model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
     vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
     
-    inputs = processor(text=message, return_tensors="pt")
+    inputs = processor(text=story, return_tensors="pt")
     speaker_embeddings = torch.zeros((1, 512))  # or load xvectors from a file
     
     set_seed(555)  # make deterministic
@@ -46,6 +46,8 @@ def text2speech(message):
     #response = requests.post(API_URL, headers=headers, json=payload)
     #with open("story.mp3", "wb") as file:
     #    file.write(response.content)
+
+    return message
 
 def main():
     st.set_page_config(page_title="Image to Story", page_icon="🤖")
@@ -63,7 +65,6 @@ def main():
         story = generateStory(scenario)
         messge = text2speech(message)
 
-         
         with st.expander("Scenario"):
             st.write(scenario)
         with st.expander("Story"):
