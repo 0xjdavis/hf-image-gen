@@ -2,6 +2,7 @@ import streamlit as st
 from PIL import Image
 import requests
 from transformers import pipeline, BlipProcessor, BlipForConditionalGeneration, SpeechT5Processor, SpeechT5ForTextToSpeech, SpeechT5HifiGan, set_seed
+import torch as torch
 
 HUGGINGFACE_KEY = st.secrets['huggingface_key']
 
@@ -37,7 +38,7 @@ def text2speech(message):
     model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
     vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
     
-    inputs = processor(text="Hello, my dog is cute", return_tensors="pt")
+    inputs = processor(text=story, return_tensors="pt")
     speaker_embeddings = torch.zeros((1, 512))  # or load xvectors from a file
     
     set_seed(555)  # make deterministic
