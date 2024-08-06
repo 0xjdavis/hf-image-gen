@@ -14,7 +14,7 @@ def img2text(image_path):
     image = Image.open(image_path)
     inputs = processor(images=image, return_tensors="pt")
     output = model.generate(**inputs)
-    generated_text = processor.decode(output[0], skip_special_tokens=True)
+    scenario = processor.decode(output[0], skip_special_tokens=True)
     # print("Result", generated_text)
     return scenario
 
