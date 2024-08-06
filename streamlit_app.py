@@ -36,7 +36,8 @@ def text2speech(message):
     inputs = processor(text=message, return_tensors="pt")
     speaker_embeddings = torch.zeros((1, 512))  # Use default or specific speaker embeddings
 
-    set_seed(555)  # Make deterministic
+    # Make deterministic
+    set_seed(555)  
 
     # Generate speech
     speech = model.generate_speech(inputs["input_ids"], speaker_embeddings=speaker_embeddings, vocoder=vocoder)
