@@ -65,9 +65,7 @@ def main():
         story = generateStory(scenario)
         text2speech(story)
 
-        
-        with st.expander("Template"):
-            st.write(template)
+         
         with st.expander("Scenario"):
             st.write(scenario)
         with st.expander("Story"):
