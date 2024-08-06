@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image
 import requests
+import base64
 from transformers import pipeline, BlipProcessor, BlipForConditionalGeneration, SpeechT5Processor, SpeechT5ForTextToSpeech, SpeechT5HifiGan, set_seed
 import torch as torch
 
