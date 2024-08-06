@@ -26,10 +26,11 @@ def generateStory(scenario):
 
     
 def text2speech(message):
+    st.write(story)
     processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
     model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
     vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
-    
+
     inputs = processor(text=story, return_tensors="pt")
     speaker_embeddings = torch.zeros((1, 512))  # or load xvectors from a file
     
@@ -40,14 +41,6 @@ def text2speech(message):
     speech.shape
     torch.Size([15872])
     
-    #headers = {"Authorization": f"Bearer {HUGGINGFACE_KEY}"}
-    # API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-large-960h-lv60-self"
-    #payload = {"inputs": message}
-    #response = requests.post(API_URL, headers=headers, json=payload)
-    #with open("story.mp3", "wb") as file:
-    #    file.write(response.content)
-    speech = text2Speech(story)
-    return speech
 
 def main():
     st.set_page_config(page_title="Image to Story", page_icon="🤖")
