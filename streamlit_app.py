@@ -15,7 +15,7 @@ def img2text(image_path):
     inputs = processor(images=image, return_tensors="pt")
     output = model.generate(**inputs)
     generated_text = processor.decode(output[0], skip_special_tokens=True)
-    print("Result", generated_text)
+    # print("Result", generated_text)
     return generated_text
 
 def generateStory(scenario):
@@ -26,7 +26,7 @@ def generateStory(scenario):
     prompt = template.format(scenario=scenario)
     story_generator = pipeline("text-generation", model="gpt2", framework="pt")
     story = story_generator(prompt, max_new_tokens=400, num_return_sequences=1)[0]['generated_text']
-    print("Story", story)
+    # print("Story", story)
     return story
 
     
@@ -70,10 +70,11 @@ def main():
 
         with st.expander("Scenario"):
             st.write(scenario)
-        with st.expander("Story"):
+        with st.expander("Template"):
+            st.write(prompt)
+        with st.expander("Story")
             st.write(story)
-         
-        audio_bytes = StringIO(story.getvalue().decode("utf-8"))
+        audio_bytes = StringIO(story.decode("utf-8"))
         st.audio(audio_bytes, format='audio/mp3')
 
 if __name__ == "__main__":
