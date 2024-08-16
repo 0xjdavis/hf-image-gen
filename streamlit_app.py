@@ -81,7 +81,7 @@ def main():
 
     st.title("Generate Stories from Images with Hugging Face Transformers")
     st.write("Upload an image to create an audio story!")
-    uploaded_file = st.file_uploader("Upload an image", type="png")
+    uploaded_file = st.file_uploader("PNG Format", type="png")
 
     if uploaded_file is not None:
         bytes_data = uploaded_file.getvalue()
