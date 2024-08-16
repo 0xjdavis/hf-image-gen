@@ -60,7 +60,7 @@ def main():
     
     # Sidebar for API Key and User Info
     st.sidebar.header("About App")
-    st.sidebar.markdown('This is an app to convert rasterized images (jpeg, png) to a pixelized format created by <a href="https://ai.jdavis.xyz" target="_blank">0xjdavis</a>.', unsafe_allow_html=True)
+    st.sidebar.markdown('This is an app that generates stories from images using 🤗 Hugging Face transformers created by <a href="https://ai.jdavis.xyz" target="_blank">0xjdavis</a>.', unsafe_allow_html=True)
      
     # Calendly
     st.sidebar.markdown("""
