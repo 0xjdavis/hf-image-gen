@@ -2,6 +2,7 @@
 
 Uses natural language to generate audio stories from images with PyTorch, 🤗 Hugging Face Transformers, and a GPT2 model
 
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://hf-image-gen.streamlit.app/)
 
 ### How to run it on your own machine
 
